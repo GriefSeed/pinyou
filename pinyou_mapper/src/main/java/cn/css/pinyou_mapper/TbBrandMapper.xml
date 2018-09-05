@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.css.pinyou_mapper.TbBrandMapper">
+
+    <select id="findAll" resultType="cn.css.pinyou_pojo.domain.TbBrand">
+        select id,name,first_char as firstChar FROM tb_brand
+    </select>
+</mapper>
