@@ -5,4 +5,37 @@
     <select id="findAll" resultType="cn.css.pinyou_pojo.domain.TbBrand">
         select id,name,first_char as firstChar FROM tb_brand
     </select>
+
+    <select id="search" parameterType="cn.css.pinyou_pojo.domain.TbBrand" resultType="cn.css.pinyou_pojo.domain.TbBrand">
+        select id,name,first_char as firstChar FROM tb_brand
+        <!-- 作用：1、添加WHERE关键字；2、校验SQL语句去掉后面第一个AND-->
+        <where>
+            <if test="name != null and name != ''">
+                <!-- #{} ：站位符，有预编译过程；防止SQL注入；比如：张—>'张' -->
+                <!-- ${} : 字符串拼接符； 没有预编译过程，不能防止SQL注入；比如：张—>张 -->
+                AND name like "%"#{name}"%"
+            </if>
+            <if test="firstChar != null and firstChar != ''">
+                AND first_char = #{firstChar}
+            </if>
+        </where>
+    </select>
+
+
+    <insert id="add" parameterType="cn.css.pinyou_pojo.domain.TbBrand">
+        INSERT INTO `tb_brand` (`name`, `first_char`) VALUES (#{name},#{firstChar});
+    </insert>
+
+    <update id="update" parameterType="cn.css.pinyou_pojo.domain.TbBrand">
+        UPDATE `tb_brand` SET `name`= #{name}, `first_char`=#{firstChar} WHERE id = #{id}
+    </update>
+
+    <select id="findOne" parameterType="Long" resultType="cn.css.pinyou_pojo.domain.TbBrand">
+        select id,name,first_char as firstChar FROM tb_brand where id = #{id}
+    </select>
+
+    <delete id="delete" parameterType="Long">
+        DELETE from tb_brand where id = #{id}
+    </delete>
+
 </mapper>
