@@ -3,6 +3,8 @@ package cn.css.pinyou_mapper;
 import cn.css.pinyou_pojo.domain.TbSpecification;
 import cn.css.pinyou_pojo.domain.TbSpecificationExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface TbSpecificationMapper {
@@ -27,4 +29,10 @@ public interface TbSpecificationMapper {
     int updateByPrimaryKeySelective(TbSpecification record);
 
     int updateByPrimaryKey(TbSpecification record);
+
+    /**
+     * 需求：查询规格值，进行下拉列表展示
+     */
+    public  List<Map> findSpecList();
+
 }

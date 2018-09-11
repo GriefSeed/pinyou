@@ -3,6 +3,8 @@ package cn.css.pinyou_manager.pinyou_manager_service;
 import cn.css.pinyou_dto.PageResult;
 import cn.css.pinyou_pojo.domain.TbBrand;
 import java.util.List;
+import java.util.Map;
+
 public interface BrandService {
 
     /**
@@ -47,4 +49,13 @@ public interface BrandService {
      * @param ids
      */
     public void delete(Long[] ids);
+
+    /**
+     * 需求:查询品牌下拉列表
+     * 查询数据格式：[{id:'1',text:'联想'},{id:'2',text:'华为'}]
+     * 返回值：List<Map>
+     *
+     */
+    public List<Map> findBrandList();
+
 }

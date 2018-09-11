@@ -37,5 +37,21 @@ app.controller("baseController",function($scope){
         }
     }
 
+    //根据JSON字符串获取JSON中对象中的value值
+        $scope.jsonToString=function(jsonStr,key){
+            //1、先把JSON字符串转成JSON对象
+            var json = JSON.parse(jsonStr);
+            var value="";
+            //2、遍历JSON对象，根据每一个对象中的Key获取值
+            for(var i = 0; i < json.length; i++){
+                if(i>0){
+                    value+=",";
+                }
+                value += json[i][key];
+            }
+            //联想，华为小米OPPO苹果，为了值可读性，用,号隔开
+            //3、返回Value值
+            return value;
+        }
 
 });

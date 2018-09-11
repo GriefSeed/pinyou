@@ -14,4 +14,9 @@ app.service("specificationService",function($http){
     this.dele=function(ids){
         return $http.get("../specification/delete?ids="+ids);
     }
+
+    //查询规格下拉列表
+    this.findSpecList = function () {
+        return $http.get("../specification/findSpecList");
+    }
 })

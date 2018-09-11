@@ -20,4 +20,10 @@ app.service("brandService",function($http){
     this.search=function(pageNum,pageSize,entity){
         return $http.post("../brand/search?pageNum="+pageNum+"&pageSize="+pageSize,entity);
     }
+
+    //查询品牌列表数据
+    this.findBrandList = function () {
+        return $http.get("../brand/findBrandList");
+    }
+
 });

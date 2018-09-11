@@ -5,6 +5,9 @@ import cn.css.pinyou_dto.PageResult;
 import cn.css.pinyou_dto.Specification;
 import cn.css.pinyou_pojo.domain.TbSpecification;
 
+import java.util.List;
+import java.util.Map;
+
 public interface SpecificationService {
 
     /**
@@ -45,4 +48,10 @@ public interface SpecificationService {
      * @param ids
      */
     void delete(Long[] ids);
+
+    /**
+     * 需求：查询规格值，进行下拉列表展示
+     */
+    public List<Map> findSpecList();
+
 }

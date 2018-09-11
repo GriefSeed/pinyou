@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/brand")
@@ -75,4 +76,16 @@ public class BrandController {
             return new Result(false, "操作失败");
         }
     }
+    /**
+     * 查询数据格式：[{id:'1',text:'联想'},{id:'2',text:'华为'}]
+     * 返回值：List<Map>
+     *
+     */
+    @RequestMapping("findBrandList")
+    public List<Map> findBrandList() {
+        //调用远程service服务方法
+        List<Map> brandList = brandService.findBrandList();
+        return  brandList;
+    }
+
 }

@@ -10,6 +10,7 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BrandServiceImpl implements BrandService {
@@ -63,4 +64,16 @@ public class BrandServiceImpl implements BrandService {
             brandMapper.delete(id);
         }
     }
+
+    /**
+     * 需求:查询品牌下拉列表
+     * 查询数据格式：[{id:'1',text:'联想'},{id:'2',text:'华为'}]
+     * 返回值：List<Map>
+     *
+     */
+    @Override
+    public List<Map> findBrandList() {
+        return brandMapper.findBrandList();
+    }
+
 }

@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("specification")
 public class SpecificationController {
@@ -61,5 +64,14 @@ public class SpecificationController {
             return new Result(false,"操作失败");
         }
     }
+
+    /**
+     * 需求：查询规格值，进行下拉列表展示
+     */
+    @RequestMapping("findSpecList")
+    public List<Map> findSpecList() {
+        return specificationService.findSpecList();
+    }
+
 
 }

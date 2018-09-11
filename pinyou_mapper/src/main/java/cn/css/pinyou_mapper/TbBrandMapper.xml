@@ -38,4 +38,10 @@
         DELETE from tb_brand where id = #{id}
     </delete>
 
+    <!--查询品牌下拉列表-->
+    <select id="findBrandList" resultType="map">
+        select id,name text from tb_brand
+    </select>
+
+
 </mapper>
