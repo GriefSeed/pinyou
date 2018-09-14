@@ -27,7 +27,7 @@
 
     <!-- 引用dubbo 服务 -->
     <dubbo:application name="pinyougou-manager-web"/>
-    <dubbo:registry address="zookeeper://192.168.25.133:2181"/>
+    <dubbo:registry address="zookeeper://192.168.25.130:2181"/>
     <dubbo:annotation package="cn.css.pinyou_web.controller"/>
     <!--扫描了@Controller注解，不止扫描@Controller注解还扫描了@Reference远程注入的注解（dubbo的注解） -->
 

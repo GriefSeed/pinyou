@@ -127,6 +127,10 @@
       #{isDelete,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.css.pinyou_pojo.domain.TbGoods" >
+      <!-- 获取插入后的ID -->
+    <selectKey keyColumn="id" keyProperty="id" resultType="long" order="AFTER">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into tb_goods
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

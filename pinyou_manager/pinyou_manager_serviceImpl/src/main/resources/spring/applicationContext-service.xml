@@ -12,7 +12,7 @@
     <!-- dubbo推荐服务注册端口号以20880开始 -->
     <dubbo:protocol name="dubbo" port="20880"></dubbo:protocol>
     <dubbo:application name="pinyougou-manager-service"/>
-    <dubbo:registry address="zookeeper://192.168.25.133:2181"/>
+    <dubbo:registry address="zookeeper://192.168.25.130:2181"/>
     <dubbo:annotation package="cn.css.pinyou_manager.pinyou_manager_serviceImpl" />
     <!-- 此时我们用的实现类@Service注解用的阿里巴巴dubbo 的所以，用dubbo的扫描形式-->
 

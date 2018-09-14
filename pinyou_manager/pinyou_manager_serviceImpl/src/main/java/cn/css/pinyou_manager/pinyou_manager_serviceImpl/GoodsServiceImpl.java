@@ -1,8 +1,10 @@
 package cn.css.pinyou_manager.pinyou_manager_serviceImpl;
 import java.util.List;
 
+import cn.css.pinyou_dto.GoodsVo;
 import cn.css.pinyou_dto.PageResult;
 import cn.css.pinyou_manager.pinyou_manager_service.GoodsService;
+import cn.css.pinyou_mapper.TbGoodsDescMapper;
 import cn.css.pinyou_mapper.TbGoodsMapper;
 import cn.css.pinyou_pojo.domain.TbGoods;
 import cn.css.pinyou_pojo.domain.TbGoodsExample;
@@ -26,6 +28,9 @@ public class GoodsServiceImpl implements GoodsService {
 
 	@Autowired
 	private TbGoodsMapper goodsMapper;
+
+	@Autowired
+	private TbGoodsDescMapper goodsDescMapper;
 	
 	/**
 	 * 查询全部
@@ -50,7 +55,23 @@ public class GoodsServiceImpl implements GoodsService {
 	 */
 	@Override
 	public void add(TbGoods goods) {
-		goodsMapper.insert(goods);		
+		goodsMapper.insert(goods);
+	}
+
+	/**
+	 * 上面那个没用，这个才是添加，将描述和主体分离，保证事务，在service层插入所有
+	 * @param vo
+	 */
+	@Override
+	public void addVo(GoodsVo vo) {
+		//1、添加商品基本信息
+		//设置没有的属性
+		vo.getGoods().setAuditStatus("0");
+		goodsMapper.insertSelective(vo.getGoods());
+		//主键返回
+		//2、添加商品描述信息
+		vo.getGoodsDesc().setGoodsId(vo.getGoods().getId());
+		goodsDescMapper.insertSelective(vo.getGoodsDesc());
 	}
 
 	

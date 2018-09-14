@@ -1,4 +1,5 @@
 package cn.css.pinyou_manager.pinyou_manager_service;
+import cn.css.pinyou_dto.GoodsVo;
 import cn.css.pinyou_dto.PageResult;
 import cn.css.pinyou_pojo.domain.TbGoods;
 
@@ -29,8 +30,13 @@ public interface GoodsService {
 	 * 增加
 	*/
 	public void add(TbGoods goods);
-	
-	
+
+	/**
+	 * 上面那个没用，这个才是添加，将描述和主体分离，保证事务，在service层插入所有
+	 * @param vo
+	 */
+	public void addVo(GoodsVo vo) ;
+
 	/**
 	 * 修改
 	 */
