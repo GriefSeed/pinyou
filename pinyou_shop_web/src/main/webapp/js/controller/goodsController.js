@@ -203,4 +203,24 @@ app.controller('goodsController', function ($scope, $controller, itemCatService,
         //newList=[{spec:{"网络":"移动3G"},price:0,num:99999,status:'0',isDefault:'0' }，{spec:{"网络":"移动4G"},price:0,num:99999,status:'0',isDefault:'0' }]
         return newList;
     }
+
+    // 商家查询自己上架的商品，但仅是商品，附带的SKU不查，商品一旦禁用下架，客户网页也不会看见
+    //定义一个数组：把数组根据索引指定状态
+    $scope.statusList = ["未审核", "已审核", "审核未通过", "关闭"];
+    $scope.marketableList = ["下架", "上架"];
+    $scope.itemCatList = [];
+    //初始化，获取商品分类把分类得ID和name放入数组
+    $scope.findItemCatList = function () {
+        itemCatService.findAll().success(function (response) {
+            for (var i = 0; i < response.length; i++) {
+                $scope.itemCatList[response[i].id] = response[i].name;
+            }
+        })
+    }
+    $scope.marketableStatus=function(status){
+        goodsService.marketableStatus($scope.selectIds,status).success(function (response) {
+            //刷新页面
+            $scope.reloadList();
+        })
+    }
 });	
