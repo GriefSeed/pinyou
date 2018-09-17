@@ -34,4 +34,12 @@
 
     <!-- 放行静态资源-->
     <mvc:default-servlet-handler></mvc:default-servlet-handler>
+
+    <!--配置上传图片的管理类 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--设置上传图片的属性 -->
+        <property name="defaultEncoding" value="utf-8"/>
+        <!--上传的最大值： 5 * 1024 * 1024 -->
+        <property name="maxUploadSize" value="5242880"/>
+    </bean>
 </beans>

@@ -1,21 +1,24 @@
 package cn.css.pinyou_manager.pinyou_manager_serviceImpl;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import cn.css.pinyou_dto.GoodsVo;
 import cn.css.pinyou_dto.PageResult;
 import cn.css.pinyou_manager.pinyou_manager_service.GoodsService;
-import cn.css.pinyou_mapper.TbGoodsDescMapper;
-import cn.css.pinyou_mapper.TbGoodsMapper;
+import cn.css.pinyou_mapper.*;
+import cn.css.pinyou_pojo.domain.TbBrand;
 import cn.css.pinyou_pojo.domain.TbGoods;
 import cn.css.pinyou_pojo.domain.TbGoodsExample;
 import cn.css.pinyou_pojo.domain.TbGoodsExample.Criteria;
 
+import cn.css.pinyou_pojo.domain.TbItem;
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-
 
 /**
  * 服务实现层
@@ -31,6 +34,18 @@ public class GoodsServiceImpl implements GoodsService {
 
 	@Autowired
 	private TbGoodsDescMapper goodsDescMapper;
+
+    @Autowired
+    private TbItemMapper itemMapper;
+
+    @Autowired
+    private TbBrandMapper brandMapper;
+
+    @Autowired
+    private TbItemCatMapper itemCatMapper;
+
+    @Autowired
+    private TbSellerMapper sellerMapper;
 	
 	/**
 	 * 查询全部
@@ -72,6 +87,40 @@ public class GoodsServiceImpl implements GoodsService {
 		//2、添加商品描述信息
 		vo.getGoodsDesc().setGoodsId(vo.getGoods().getId());
 		goodsDescMapper.insertSelective(vo.getGoodsDesc());
+
+        //3、添加商品SKU
+        //List<TbItem> itemList = vo.getItemList();
+        for(TbItem item : vo.getItemList()){
+
+            //在商品中标题是商品SPU名+规格名
+            String title = vo.getGoods().getGoodsName();
+            Map<String,Object> map = JSON.parseObject(item.getSpec(), Map.class);
+            for(String key : map.keySet()){
+                title += "  " + map.get(key);
+            }
+            item.setTitle(title);
+            item.setCategoryid(vo.getGoods().getCategory3Id());
+            item.setStatus("1");
+            item.setCreateTime(new Date());
+            item.setUpdateTime(new Date());
+            item.setGoodsId(vo.getGoods().getId());
+            item.setSellerId(vo.getGoods().getSellerId());
+
+            //添加品牌名
+            TbBrand brand = brandMapper.findOne(vo.getGoods().getBrandId());
+            item.setBrand(brand.getName());
+            //分类名
+            item.setCategory(itemCatMapper.selectByPrimaryKey(vo.getGoods().getCategory3Id()).getName());
+            //商家名
+            item.setSeller(sellerMapper.selectByPrimaryKey(vo.getGoods().getSellerId()).getNickName());
+            //图片
+            List<Map> mapList = JSON.parseArray(vo.getGoodsDesc().getItemImages(), Map.class);
+            if(mapList.size() > 0){
+                item.setImage((String) mapList.get(0).get("url"));
+            }
+            //添加
+            itemMapper.insertSelective(item);
+        }
 	}
 
 	
