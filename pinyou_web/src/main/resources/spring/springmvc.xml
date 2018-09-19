@@ -27,10 +27,19 @@
 
     <!-- 引用dubbo 服务 -->
     <dubbo:application name="pinyougou-manager-web"/>
-    <dubbo:registry address="zookeeper://192.168.25.130:2181"/>
+    <dubbo:registry address="zookeeper://192.168.25.134:2181"/>
     <dubbo:annotation package="cn.css.pinyou_web.controller"/>
     <!--扫描了@Controller注解，不止扫描@Controller注解还扫描了@Reference远程注入的注解（dubbo的注解） -->
 
     <!-- 放行静态资源-->
     <mvc:default-servlet-handler></mvc:default-servlet-handler>
+
+    <!-- 配置管理类-->
+    <!--配置上传图片的管理类 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--设置上传图片的属性 -->
+        <property name="defaultEncoding" value="utf-8"/>
+        <!--上传的最大值： 5 * 1024 * 1024 -->
+        <property name="maxUploadSize" value="5242880"/>
+    </bean>
 </beans>
