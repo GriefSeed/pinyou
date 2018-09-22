@@ -4,12 +4,14 @@ import cn.css.pinyou_dto.GoodsVo;
 import cn.css.pinyou_dto.PageResult;
 import cn.css.pinyou_dto.Result;
 import cn.css.pinyou_manager.pinyou_manager_service.GoodsService;
+import cn.css.pinyou_page_services.PageService;
 import cn.css.pinyou_pojo.domain.TbGoods;
 import com.alibaba.dubbo.config.annotation.Reference;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,6 +27,9 @@ public class GoodsController {
 
     @Reference
     private GoodsService goodsService;
+
+    @Reference
+    private PageService pageService;
 
     /**
      * 返回全部列表
@@ -131,15 +136,35 @@ public class GoodsController {
         return goodsService.findPage(goods, page, rows);
     }
 
+    /**
+     * 在原来的方法上，加入静态页面
+     *
+     * @param ids
+     * @param status
+     * @return
+     */
     @RequestMapping("/marketableStatus")
     public Result marketableStatus(Long[] ids, String status) {
         try {
             goodsService.marketableStatus(ids, status);
+            // 如果状态为1：商品上架，调用生成静态页面的服务，删除和下架先不管
+            if ("1".equals(status)) {
+                for (Long goodsId : ids) {
+                    pageService.creataHtml(goodsId);
+                }
+            }
             return new Result(true, "操作成功");
         } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, "操作失败");
         }
+    }
+
+
+    @RequestMapping("/getItemPage")
+    public int getItemPage(Long goodId) {
+        pageService.creataHtml(goodId);
+        return 1;
     }
 
 }
