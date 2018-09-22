@@ -8,4 +8,11 @@ public interface PageService {
      */
     void creataHtml(Long goodsId);
 
+
+    /**
+     * 根据商品ID删除商品静态页面
+     *
+     * @param goodsId
+     */
+    void delHtml(Long goodsId);
 }

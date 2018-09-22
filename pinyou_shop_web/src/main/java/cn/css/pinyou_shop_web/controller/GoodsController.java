@@ -8,12 +8,19 @@ import cn.css.pinyou_page_services.PageService;
 import cn.css.pinyou_pojo.domain.TbGoods;
 import com.alibaba.dubbo.config.annotation.Reference;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
 import java.util.List;
 
 /**
@@ -136,6 +143,16 @@ public class GoodsController {
         return goodsService.findPage(goods, page, rows);
     }
 
+    // Spring提供的jms工具类
+    @Autowired
+    private JmsTemplate jmsTemplate;
+    // jms接口，在application中已注入实现类，使用autowired注入即可
+    @Autowired
+    private Destination topicDeleteDestination;
+
+    @Autowired
+    private Destination topicItemDestination;
+
     /**
      * 在原来的方法上，加入静态页面
      *
@@ -147,11 +164,26 @@ public class GoodsController {
     public Result marketableStatus(Long[] ids, String status) {
         try {
             goodsService.marketableStatus(ids, status);
-            // 如果状态为1：商品上架，调用生成静态页面的服务，删除和下架先不管
+            // 如果状态为1：商品上架，调用生成静态页面的服务,使用activeMQ消息中间件创建或删除静态缓存页面
             if ("1".equals(status)) {
-                for (Long goodsId : ids) {
+                //商品上架了，我们应该把商品同步到索引库中，同步生成静态页面
+                jmsTemplate.send(topicItemDestination, new MessageCreator() {
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
+                        return session.createObjectMessage(ids);
+                    }
+                });
+                /*for (Long goodsId : ids) {
                     pageService.creataHtml(goodsId);
-                }
+                }*/
+            }
+            if ("0".equals(status)) {
+                jmsTemplate.send(topicDeleteDestination, new MessageCreator() {
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
+                        return session.createObjectMessage(ids);
+                    }
+                });
             }
             return new Result(true, "操作成功");
         } catch (Exception e) {
@@ -161,6 +193,12 @@ public class GoodsController {
     }
 
 
+    /**
+     * 测试用
+     *
+     * @param goodId
+     * @return
+     */
     @RequestMapping("/getItemPage")
     public int getItemPage(Long goodId) {
         pageService.creataHtml(goodId);

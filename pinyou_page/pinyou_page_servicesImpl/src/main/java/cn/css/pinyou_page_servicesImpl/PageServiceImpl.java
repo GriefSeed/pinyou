@@ -41,6 +41,8 @@ public class PageServiceImpl implements PageService {
     @Autowired
     private TbItemMapper itemMapper;
 
+    private String filePath = "E:\\item\\";
+
     /**
      * 根据商品ID生成静态页面,就是将模板读进内存，将查询出来的数据与模板合并，然后使用java IO文件流输出静态页面
      *
@@ -77,11 +79,23 @@ public class PageServiceImpl implements PageService {
             map.put("itemCat3Name", itemCat3Name);
             map.put("itemList", itemList);
             //5、指定输出的路径
-            FileWriter fileWriter = new FileWriter(new File("E:\\item\\" + goodsId + ".html"));
+            FileWriter fileWriter = new FileWriter(new File(filePath + goodsId + ".html"));
             //6、开始输出
             template.process(map, fileWriter);
             //7、关闭流
             fileWriter.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void delHtml(Long goodsId) {
+        try {
+            File temp = new File(filePath + goodsId + ".html");
+            if(temp.exists()){
+                temp.delete();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
