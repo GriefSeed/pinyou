@@ -14,11 +14,11 @@
     <link rel="stylesheet" type="text/css" href="css/widget-cartPanelView.css" />
     <!-- 申请入驻的页面需用用AngularJS完成功能-->
     <!-- 引入AngularJS-->
-    <script type="text/javascript" src="/plugins/angularjs/angular.min.js"></script>
+    <script type="text/javascript" src="plugins/angularjs/angular.min.js"></script>
 
     <!-- 把提出去的JS 引回来-->
-    <script type="text/javascript" src="/js/base.js"></script>
-    <script type="text/javascript" src="/js/controller/pageController.js"></script>
+    <script type="text/javascript" src="js/base.js"></script>
+    <script type="text/javascript" src="js/controller/pageController.js"></script>
 
     <script>
         //SKU商品列表
@@ -144,7 +144,7 @@
 								</dt>
 								<#list specification.attributeValue as value>
 								<!--  class="selected"-->
-									<dd><a href="javascript:;" class="{{isSelectSpec('${specification.attributeName}','${value}')?'selected':''}}" ng-click="selectSecification('${specification.attributeName}','${value}')">${value}<span title="点击取消选择">&nbsp;</span></a></dd>
+									<dd><a href="javascript:;" class="{{isSelected('${specification.attributeName}','${value}')?'selected':''}}" ng-click="selectSpecification('${specification.attributeName}','${value}')">${value}<span title="点击取消选择">&nbsp;</span></a></dd>
 								</#list>
 							</dl>
 							</#list>
