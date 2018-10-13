@@ -1,9 +1,10 @@
 package cn.css.pinyou_pojo.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TbCitiesExample {
+public class TbCitiesExample implements Serializable {
     protected String orderByClause;
 
     protected boolean distinct;

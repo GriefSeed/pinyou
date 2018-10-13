@@ -1,6 +1,8 @@
 package cn.css.pinyou_pojo.domain;
 
-public class TbCities {
+import java.io.Serializable;
+
+public class TbCities implements Serializable {
     private Integer id;
 
     private String cityid;

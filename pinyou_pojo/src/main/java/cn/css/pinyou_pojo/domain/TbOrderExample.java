@@ -1,11 +1,12 @@
 package cn.css.pinyou_pojo.domain;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TbOrderExample {
+public class TbOrderExample implements Serializable {
     protected String orderByClause;
 
     protected boolean distinct;
